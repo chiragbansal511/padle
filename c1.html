@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATLAB Code 1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="c2.html">C2 - MATLAB Code 2</a>
+    </nav>
+    <div class="container">
+        <h1>MATLAB Code 1</h1>
+        <pre>
+clc;
+clear all;
+n = linspace(-10, 10, 21);
+u1 = n > 0;
+u2 = n >= 0;
+u = u2 - u1;
+
+subplot(2, 2, 1);
+stem(n, u);
+title('Unit Impulse Function.');
+
+subplot(2, 2, 2);
+stem(n, u1);
+title('Unit Step Function');
+
+subplot(2, 2, 3);
+s = sign(n);
+stem(n, s);
+title('Signum Function');
+        </pre>
+    </div>
+</body>
+</html>

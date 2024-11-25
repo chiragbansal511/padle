@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATLAB Code 1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="c2.html">C2 - MATLAB Code 2</a>
+    </nav>
+    <div class="container">
+        <h1>MATLAB Code 7</h1>
+        <pre>
+            clc;
+clear all;
+
+L = input('Enter filter length (number of taps, must be odd): ');
+fc = input('Enter cutoff frequency (in Hz): ');
+fs = input('Enter sampling frequency (in Hz): ');
+
+
+a = (L-1)/2; 
+n = 0:L-1;  
+
+
+W = 0.54 - 0.46 * cos(2 * pi * n / (L-1));  
+
+
+hd = sin(2*pi*fc*(n-a)/fs)./(pi*(n-a));  
+hd(a+1) = 2*fc/fs;  
+
+
+h_hamming = hd .* W;
+
+
+subplot(2,1,1)
+stem(n, h_hamming, 'filled');
+title('Impulse Response (Hamming Window)');
+xlabel('Samples');
+ylabel('Amplitude');
+
+[H_hamming, f] = freqz(h_hamming, 1, 1024, fs);
+
+
+subplot(2,1,2);
+plot(f, 20*log10(abs(H_hamming)));
+title('Magnitude Response (Hamming Window)');
+xlabel('Frequency (Hz)');
+ylabel('Magnitude (dB)');
+grid on;
+        </pre>
+    </div>
+</body>
+</html>

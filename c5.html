@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATLAB Code 1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="c2.html">C2 - MATLAB Code 2</a>
+    </nav>
+    <div class="container">
+        <h1>MATLAB Code 5</h1>
+        <pre>
+            clc;
+clear all;
+N=128;
+n=1:N;
+window=zeros(size(n));
+windowType = 'rectangular'; % Options: 'hamming', 'hanning', 'blackman', etc.
+switch windowType
+    case 'hamming'
+        window = 0.54-0.46*cos(2*pi*n/N);
+    case 'hanning'
+        window = 0.5-0.5*cos(2*pi*n/N);
+    case 'blackman'
+        window =0.42-0.5*cos(2*pi*n/N)+0.08*cos(4*pi*n/N);
+    case 'rectangular'
+        window(n>=0)=1;
+    case 'bartlett'
+       for n = 1:N
+    if n <= N/2
+        window(n) = 2 * (n) / (N);
+    else
+        window(n) = 2 * (N - n) / (N);
+    end
+end
+    otherwise
+        error('Unsupported window type. Choose from ''hamming'', ''hanning'', ''blackman''.');
+end
+subplot(2,1,1);
+stem(window);
+title([windowType ' Window - Time Domain']);
+xlabel('Sample');
+ylabel('Amplitude');
+grid on;
+legend('Ojasvin Chaudhary 102215092');
+%axis([0 20 0 1.5])
+
+% Frequency-domain response using freqz
+[Hz, f] = freqz(window, 1,'half', 2048); % Compute frequency response
+
+% Plot frequency-domain response
+subplot(2,1,2);
+plot(f * (0.5 * 2), 20*log10(abs(Hz))); % Convert to dB scale and frequency axis in Hz
+title([windowType ' Window - Frequency Domain']);
+xlabel('Frequency (Hz)');
+ylabel('Magnitude (dB)');
+legend('Ojasvin Chaudhary 102215092');
+grid on;
+
+        </pre>
+    </div>
+</body>
+</html>

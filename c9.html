@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATLAB Code 1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="c2.html">C2 - MATLAB Code 2</a>
+    </nav>
+    <div class="container">
+        <h1>MATLAB Code 9</h1>
+        <pre>
+            % Simplified Digital Butterworth Low-Pass Filter Design using Impulse Invariance Transformation
+
+% User-defined specifications
+wp = 0.2 * pi;     % Passband edge frequency in radians/second
+ws = 0.3 * pi;     % Stopband edge frequency in radians/second
+Rp = 1;            % Passband ripple in dB
+As = 15;           % Stopband attenuation in dB
+T = 1;             % Sampling period (Impulse Invariance)
+
+% Analog Prototype Specifications
+OmegaP = wp / T;   % Prototype passband frequency
+OmegaS = ws / T;   % Prototype stopband frequency
+
+% Calculate Filter Order (N) for Butterworth filter
+N = ceil(log10((10^(Rp / 10) - 1) / (10^(As / 10) - 1)) / (2 * log10(OmegaP / OmegaS)));
+
+% Cutoff frequency for analog prototype
+OmegaC = OmegaP / ((10^(Rp / 10) - 1)^(1 / (2 * N)));
+
+% Analog Butterworth Filter Prototype
+[z, p, k] = buttap(N);     % Prototype poles
+p = p * OmegaC;            % Scale poles for cutoff
+k = k * OmegaC^N;          % Scale gain
+
+% Analog transfer function coefficients
+[b_analog, a_analog] = zp2tf(z, p, k);
+
+% Impulse Invariance Transformation to Digital Domain
+[R, p, k] = residue(b_analog, a_analog);
+p = exp(p * T);  % Transform poles
+[b, a] = residuez(R, p, k); % Digital filter coefficients
+
+% Frequency Response Plotting
+[H, w] = freqz(b, a, 1024); 
+
+% Magnitude Response
+subplot(2,1,1);
+plot(w / pi, abs(H), 'b');
+xlabel('Normalized Frequency (\omega / \pi)');
+ylabel('Magnitude');
+title('Magnitude Response');
+grid on;
+
+% Phase Response
+subplot(2,1,2);
+plot(w / pi, angle(H), 'r');
+xlabel('Normalized Frequency (\omega / \pi)');
+ylabel('Phase (radians)');
+title('Phase Response');
+grid on;
+        </pre>
+    </div>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATLAB Code 1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="c2.html">C2 - MATLAB Code 2</a>
+    </nav>
+    <div class="container">
+        <h1>MATLAB Code 4</h1>
+        <pre>
+            x = [1 2 3 4];
+h = [0 1 0.5]; 
+n1=1:length(x);
+n2=1:length(h);
+
+subplot(3,2,1)
+stem(n1-1,x);
+title('x(n)');
+axis([-1 6 0 6]);
+grid on;
+
+subplot(3,2,2)
+stem(n2-1,h);
+title('h(n)');
+axis([-1 6 0 1.5]);
+grid on;
+
+N = max(length(x), length(h));
+
+x_padded = [x, zeros(1, N - length(x))];
+h_padded = [h, zeros(1, N - length(h))];
+
+y = zeros(1, N);
+
+for n = 1:N
+    index_sum = 0;
+    for m = 1:N
+        
+        index = mod(n - m, N) + 1;
+        index_sum = index_sum + x_padded(m) * h_padded(index);
+    end
+    y(n) = index_sum;
+end
+
+disp('Circular Convolution Result:');
+disp(y);
+
+subplot(3,2,3);
+stem(y);
+title('Circular Convolution');
+grid on;
+
+%.............................................part 2...................
+
+
+N = length(x) + length(h) - 1; % Length of the result sequence
+
+
+x_padded = [x, zeros(1, N - length(x))];
+h_padded = [h, zeros(1, N - length(h))];
+
+y = zeros(1, N);
+
+for n = 1:N
+    % Compute the circular index for the second sequence
+    index_sum = 0;
+    for m = 1:N
+        % Compute the circular index
+        index = mod(n - m, N) + 1;
+        index_sum = index_sum + x_padded(m) * h_padded(index);
+    end
+    % Store the result
+    y(n) = index_sum;
+end
+
+% Display the result
+disp('Linear Convolution Result:');
+disp(y);
+subplot(3,2,4);
+stem(y);
+title('Linear Convolution(using circular convolution)');
+grid on;
+
+%......................3rd part......................
+
+
+x = [1 2 3 4]; 
+h = [0 1 0.5]; 
+
+L = length(x) + length(h) - 1; 
+
+x_padded = [x, zeros(1, L - length(x))];
+h_padded = [h, zeros(1, L - length(h))];
+
+
+y_linear = conv(x_padded, h_padded);
+
+N = max(length(x), length(h)); 
+y_circular = y_linear(1:N); 
+
+
+disp('Circular Convolution Result(using linear convolution.):');
+disp(y_circular);
+
+subplot(3,2,5);
+stem(y_circular);
+title('Circular Convolution(using Linear convolution)')
+grid on;
+%..................................4th part.........................
+
+x = [1 2 3 4]; 
+h = [2 1 2 1]; 
+
+N = max(length(x), length(h)); 
+
+x_padded = [x, zeros(1, N - length(x))];
+h_padded = [h, zeros(1, N - length(h))];
+
+X = fft(x_padded);
+H = fft(h_padded);
+
+Y = X .* H;
+
+y_fft = ifft(Y);
+
+disp('Circular Convolution Result using FFT:');
+disp(y_fft);
+subplot(3,2,6);
+stem(y_fft);
+title('Circular Convolution(using DFT IDFT)')
+grid on;
+
+        </pre>
+    </div>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATLAB Code 1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="c2.html">C2 - MATLAB Code 2</a>
+    </nav>
+    <div class="container">
+        <h1>MATLAB Code 3</h1>
+        <pre>
+            x = input('Enter the sequence x[n]: ');
+N = length(x);
+X = zeros(1, N);
+for k = 0:N-1
+    for n = 0:N-1
+        X(k+1) = X(k+1) + x(n+1)*exp(-1j*2*pi*k*n/N);
+    end
+end
+magX = abs(X);
+phaseX = angle(X);
+figure;
+
+subplot(3,2,1);
+stem(0:N-1, magX, 'filled');
+xlabel('Frequency Index (k)');
+ylabel('Magnitude');
+title('Magnitude Spectrum');
+grid on;
+%axis([-1 5 0 10])
+
+subplot(3,2,2);
+stem(0:N-1, phaseX, 'filled');
+xlabel('Frequency Index (k)');
+ylabel('Phase (radians)');
+title('Phase Spectrum');
+axis([-5 5 0 10])
+grid on;
+
+% MATLAB Program for IDFT of the calculated DFT
+
+% Initialize IDFT array
+x_new = zeros(1, N);
+
+% Calculate the IDFT
+for n = 0:N-1
+    for k = 0:N-1
+        x_new(n+1) = x_new(n+1) + (1/N)*X(k+1)*exp(1j*2*pi*k*n/N);
+    end
+end
+
+% Display original and reconstructed sequence
+disp('Original Sequence:');
+disp(x);
+
+disp('Reconstructed Sequence after IDFT:');
+disp(real(x_new)); % Taking the real part to remove numerical error
+subplot(3,2,3);
+stem(0:N-1, real(x), 'filled');
+xlabel('n');
+ylabel('amplitude');
+title('Original sequence ');
+axis([-1 5 0 10])
+grid on;
+
+subplot(3,2,4);
+stem(0:N-1, real(x_new), 'filled');
+xlabel('n');
+ylabel('amplitude');
+title('New sequence after IDFT');
+axis([-1 5 0 10])
+
+grid on
+        </pre>
+    </div>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATLAB Code 1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="c2.html">C2 - MATLAB Code 2</a>
+    </nav>
+    <div class="container">
+        <h1>MATLAB Code 10</h1>
+        <pre>
+            % Experiment 10: Generate and Process Sinusoidal Sequences
+
+% Define sequence length
+N = 51;
+
+% Get user input for normalized frequencies
+f1_normalized = input('Enter the first normalized frequency (0 to 0.5): ');
+f2_normalized = input('Enter the second normalized frequency (0 to 0.5): ');
+
+% Generate sample indices
+n = 0:N-1;
+
+% Part (a): Generate sinusoidal sequence with user-defined frequency
+sinusoid1 = sin(2 * pi * f1_normalized * n);
+
+% Plot the first sinusoidal sequence
+figure;
+subplot(4, 1, 1);
+stem(n, sinusoid1);
+title('Sinusoidal Sequence (Frequency f1)');
+xlabel('Sample Index (n)');
+ylabel('Amplitude');
+
+% Part (b): Generate second sinusoidal sequence and sum with the first
+sinusoid2 = sin(2 * pi * f2_normalized * n);
+sinusoid_sum = sinusoid1 + sinusoid2;
+
+% Plot the summed sequence
+subplot(4, 1, 2);
+stem(n, sinusoid_sum);
+title('Sum of Two Sinusoidal Sequences (f1 and f2)');
+xlabel('Sample Index (n)');
+ylabel('Amplitude');
+
+% Part (c): Perform factor-of-4 down-sampling on the summed sequence
+down_sampled = sinusoid_sum(1:4:end);
+
+% Plot the down-sampled sequence
+subplot(4, 1, 3);
+stem(0:length(down_sampled)-1, down_sampled);
+title('Down-sampled Sequence (Factor of 4)');
+xlabel('Sample Index (n)');
+ylabel('Amplitude');
+
+% Part (d): Perform factor-of-5 up-sampling on the summed sequence
+up_sampled = zeros(1, 5 * length(sinusoid_sum));
+up_sampled(1:5:end) = sinusoid_sum;
+
+% Plot the up-sampled sequence
+subplot(4, 1, 4);
+stem(0:length(up_sampled)-1, up_sampled);
+title('Up-sampled Sequence (Factor of 5)');
+xlabel('Sample Index (n)');
+ylabel('Amplitude');
+        </pre>
+    </div>
+</body>
+</html>

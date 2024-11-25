@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATLAB Code 1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="c2.html">C2 - MATLAB Code 2</a>
+    </nav>
+    <div class="container">
+        <h1>MATLAB Code 8</h1>
+        <pre>
+            fs = input('Enter the sampling frequency (Hz): ');
+fp1 = input('Enter the lower passband edge frequency (Hz): ');
+fp2 = input('Enter the upper passband edge frequency (Hz): ');
+ftr = input('Enter the transition width (Hz): ');
+rp = input('Enter the passband ripple (dB): ');
+rs = input('Enter the stopband attenuation (dB): ');
+
+wp1 = 2 * pi * fp1 / fs; 
+wp2 = 2 * pi * fp2 / fs; 
+wtr = 2 * pi * ftr / fs;
+
+delta_p = (10^(rp/20) - 1) / (10^(rp/20) + 1); 
+delta_s = 10^(-rs/20);                         
+
+A = -20*log10(min(delta_p, delta_s)); 
+if A > 50
+    beta = 0.1102*(A - 8.7);
+elseif A >= 21
+    beta = 0.5842*(A - 21)^0.4 + 0.07886*(A - 21);
+else
+    beta = 0;
+end
+
+
+D_f = ftr / fs; 
+N = ceil((A - 8) / (2.285 * 2 * pi * D_f));
+N = N + mod(N, 2); 
+
+b = fir1(N, [wp1/(2*pi), wp2/(2*pi)], kaiser(N+1, beta));
+
+freqz(b, 1, 1024, fs);
+title('FIR Band-pass Filter using Kaiser Window');
+grid on;
+        </pre>
+    </div>
+</body>
+</html>

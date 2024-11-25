@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATLAB Code 1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="c2.html">C2 - MATLAB Code 2</a>
+    </nav>
+    <div class="container">
+        <h1>MATLAB Code 2</h1>
+        <pre>
+            X=input("Enter the input sequence in square brackets:")
+H=input("Enter the system impulse response of the system:")
+l1=length(X);
+l2=length(H);
+l=l1+l2-1;
+X=[X,zeros(1,l)];
+H=[H,zeros(1,l)];
+y=zeros(1,l);
+
+for i=1:l
+    sum=0;
+    for j=1:i
+        sum=sum+(X(j)*H(i-j+1));
+    end
+    y(i)=sum;
+end
+
+y_formula=conv(X,H)
+
+subplot(2,1,1)
+stem(y)
+title('Without formula')
+
+subplot(2,1,2)
+stem(y_formula);
+title('With Formula')
+
+        </pre>
+    </div>
+</body>
+</html>
